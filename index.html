@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>简单的轮播</title>
+    <meta charset="utf-8">
+    <sricpt src="http://code.jquery.com/jquery-2.1.1.main.js"></sricpt>
+    <link rel="stylesheet" href="./a.css">
+</head>
+
+<body>
+    <div class="window">
+        <div class="images">
+            <img src="./img/1.jpg" width=300px alt="">
+            <img src="./img/2.jpg" width=300px alt="">
+            <img src="./img/3.jpg" width=300px alt="">
+            <img src="./img/4.jpg" width=300px alt="">
+        </div>
+    </div>
+    <span id=buttons>
+        <span>第1张</span>
+        <span>第2张</span>
+        <span>第3张</span>
+        <span>第4张</span>
+    </span>
+    <script>
+        var allButtons = $('#buttons > span')
+
+        for (let i = 0; i < allButtons.length; i++) {
+            $(allButtons[i]).on('click', function (x) {
+                var index = $(x.currentTarget).index()
+                var p = index * -300
+                $('#images').css({
+                    transform: 'translate(' + p + 'px)'
+                })
+                n = index
+                activeButton(allButtons.eq(n))
+            })
+        }
+
+        var n = 0;
+        var size = allButtons.length
+        allButtons.eq(n % size).trigger('click')
+
+
+        var timerId = setTimer()
+
+        function setTimer() {
+            return setInterval(() => {
+                n += 1
+                allButtons.eq(n % size).trigger('click')
+            }, 3000)
+        }
+
+        function activeButton($button) {
+            $button
+                .addClass('red')
+                .siblings('.red').removeClass('red')
+        }
+
+        $('.window').on('mouseenter', function () {
+            window.clearInterval(timerId)
+        })
+
+        $('.window').on('mouseleave', function () {
+            timerId = setTimer()
+        })
+    </script>
+</body>
+
+</html>
